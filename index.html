@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Mohit 🎂</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+body{background:#1a0b2e;color:#fff;overflow-x:hidden;text-align:center}
+.page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.hidden{display:none!important}
+h1{font-size:48px;background:linear-gradient(90deg,#ffde59,#ff6ec4,#00e5ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h2{font-size:32px;margin:10px 0}
+.sub{color:#d8b4fe;font-size:18px;margin:10px 0 20px}
+.btn{background:linear-gradient(90deg,#ff512f,#f09819);border:none;color:#fff;padding:16px 38px;font-size:20px;border-radius:50px;cursor:pointer;box-shadow:0 10px 30px rgba(255,81,47,.5)}
+.btn2{background:#fff;color:#6a11cb;padding:12px 26px;border:none;border-radius:50px;font-size:17px;cursor:pointer;font-weight:700;margin:10px}
+.card{background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25);border-radius:20px;padding:22px;max-width:520px;margin:15px auto;line-height:1.7}
+.balloons{font-size:50px;letter-spacing:8px;animation:float 2s infinite alternate}
+@keyframes float{from{transform:translateY(0)}to{transform:translateY(-12px)}}
+.cake{font-size:90px;margin:10px 0}
+.date-badge{background:#ffd700;color:#000;padding:8px 18px;border-radius:30px;font-weight:800;display:inline-block;margin:10px}
+.from{margin-top:18px;font-size:20px;color:#ffe27a}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:99}
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+
+<!-- PAGE 1 -->
+<div id="page1" class="page">
+  <div class="balloons">🎈 🎈 🎈</div>
+  <h1>Happy Birthday</h1>
+  <h2 style="font-size:52px">MOHIT 🎉</h2>
+  <div class="date-badge">17 NOVEMBER 🎂</div>
+  <p class="sub">A Special Surprise Is Waiting For You...</p>
+  <button class="btn" onclick="enterSite()">✨ ENTER ✨</button>
+  <p style="margin-top:15px;opacity:.7">Tap Enter & Turn On Sound 🔊</p>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page hidden">
+  <div class="balloons">🎊 🎂 🎊</div>
+  <h1>Happy Birthday Mohit!</h1>
+  <p class="sub">17 November - Your Special Day</p>
+  <div class="cake">🎂</div>
+  <button class="btn2" onclick="playSong()">▶️ Play Birthday Song 🎵</button>
+  <button class="btn2" onclick="blowCandles()">🕯️ Blow Candles</button>
+  <p id="candleMsg" style="margin:8px"></p>
+
+  <div class="card">
+    <h2>💌 A Message For You</h2>
+    <p>Dear Mohit,</p>
+    <p>Happy Birthday mere yaar! Aaj ka din sirf tera hai. Tu hamesha aise hi hasta rahe, khush rahe aur apne sapno ko pura kare.</p>
+    <p>Teri dosti meri life ki sabse badi gift hai. Is naye saal me tujhe bahut sara pyaar, success, paisa aur khushiyan mile.</p>
+    <p>Stay blessed, stay awesome, stay same Mohit jo sabka favourite hai!</p>
+    <p><b>Once again, Happiest Birthday Mohit! 🎉🎂</b></p>
+    <div class="from">With Lots Of Love,<br><b>From - KBB ❤️</b></div>
+  </div>
+  <button class="btn" onclick="celebrate()">🎉 Celebrate 🎉</button>
+</div>
+
+<audio id="song" loop>
+  <source src="https://cdn.pixabay.com/audio/2022/11/22/audio_2c1c1e5a6b.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+function enterSite(){
+  document.getElementById('page1').classList.add('hidden');
+  document.getElementById('page2').classList.remove('hidden');
+  playSong();
+  celebrate();
+  window.scrollTo(0,0);
+}
+function playSong(){
+  let a=document.getElementById('song');
+  a.play().catch(()=>{
+    // agar online song na chale to browser tune bajao
+    playToneSong();
+  });
+  alert('🎵 Happy Birthday Song Playing... 🎵');
+}
+// Happy Birthday Tone (agar mp3 na chale)
+function playToneSong(){
+  let ctx=new (window.AudioContext||window.webkitAudioContext)();
+  let notes=[262,262,294,262,349,330,262,262,294,262,392,349,262,262,523,440,349,330,294,466,466,440,349,392,349];
+  let t=ctx.currentTime;
+  notes.forEach((f,i)=>{
+    let o=ctx.createOscillator(), g=ctx.createGain();
+    o.connect(g); g.connect(ctx.destination);
+    o.frequency.value=f; o.type='sine';
+    g.gain.setValueAtTime(0.0001,t+i*0.35);
+    g.gain.exponentialRampToValueAtTime(0.3,t+i*0.35+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+i*0.35+0.32);
+    o.start(t+i*0.35); o.stop(t+i*0.35+0.35);
+  });
+}
+function blowCandles(){
+  document.getElementById('candleMsg').innerText='🕯️ Candles Off! Make A Wish Mohit... ✨ Your Wish Will Come True!';
+}
+function celebrate(){
+  let c=document.getElementById('confetti'), x=c.getContext('2d');
+  c.width=innerWidth; c.height=innerHeight;
+  let p=[]; let colors=['#ff0','#f0f','#0ff','#0f0','#ff6b00','#fff'];
+  for(let i=0;i<150;i++) p.push({x:Math.random()*c.width,y:Math.random()*-c.height,w:8,h:12,cl:colors[Math.floor(Math.random()*colors.length)],s:Math.random()*3+2,r:Math.random()*360});
+  let t=setInterval(()=>{
+    x.clearRect(0,0,c.width,c.height);
+    p.forEach(a=>{a.y+=a.s;a.r+=5;x.save();x.translate(a.x,a.y);x.rotate(a.r*Math.PI/180);x.fillStyle=a.cl;x.fillRect(-4,-6,8,12);x.restore();});
+  },20);
+  setTimeout(()=>{clearInterval(t);x.clearRect(0,0,c.width,c.height)},4000);
+}
+</script>
+</body>
+</html>

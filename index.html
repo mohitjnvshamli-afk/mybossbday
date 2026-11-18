@@ -276,9 +276,8 @@
         animateThree();
 
         let currentSlide = 0;
-        let slides = [];
 
-        function changeSlide(direction) {const slides = document.querySelectorAll('#content .slide');
+        function changeSlide(direction) {const slides = document.querySelectorAll('.slide');
                                          
             slides[currentSlide].classList.remove('active');
             currentSlide = (currentSlide + direction + slides.length) % slides.length;

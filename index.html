@@ -318,3 +318,13 @@
 
         function wrongLoveOption(btn) {
             btn.style.display = 'none';
+window.changeSlide = function(direction) {
+  var all = document.querySelectorAll('.slide');
+  if(all.length === 0) all = document.querySelectorAll('#content > div');
+  var cur = 0;
+  for(var i=0;i<all.length;i++){ if(all[i].classList.contains('active')) cur = i; }
+  all[cur].classList.remove('active');
+  var nxt = (cur + direction + all.length) % all.length;
+  all[nxt].classList.add('active');
+  window.currentSlide = nxt;
+};
